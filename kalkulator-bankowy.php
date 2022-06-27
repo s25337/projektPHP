@@ -1,5 +1,6 @@
 <?php
 
+
 //projekt olga bońdos s25337
 
 function potega($k,$n){
@@ -16,6 +17,33 @@ function ratyRowne($N,$r,$n){
     $wynik/=(potega(1+$r,$n)-1);
     $wynik*=$N;
     return $wynik;
+}
+
+function ratyMalejace($kwota, $liczba, $op){
+    $kapital=$kwota/$liczba;
+    // echo $kapital;
+    $calykredyt=0;
+    for($i=0; $i<$liczba; $i++){
+        $wynik=($op/1200)*($liczba-$i);
+        $wynik+=1;
+        $wynik*=$kapital;
+        $wynik=round($wynik, 2);
+        $calykredyt+=$wynik;
+        echo "rata kredytu nr ".($i+1)." będzie wynosiła $wynik zł.";
+
+        ?>
+        <html>
+        <br>
+        </html>
+        <?php
+    }
+    echo "Łączny koszt kredytu będzie wynosił ".$calykredyt." zł.";
+}
+
+function lokata($kwota2, $oprocentowanie2, $liczbakap){
+    $lokata=$kwota2*potega((1+($oprocentowanie2/100)), $liczbakap);
+    $lokata=round($lokata, 2);
+    echo "Z lokaty wypłacone zostanie ".$lokata." zł";
 }
 
 $op=$_GET['oprocentowanie'];
@@ -66,26 +94,7 @@ $kapitalizacja=$_GET['kapital'];
 <?php
 $liczba=$lata*12+$miesiace;
 if($sposob=='1') echo "Każda z ".$liczba." rat kredytu będzie wynosiła ".round(ratyRowne($kwota,$op,$liczba), 2)." zł, a łączny koszt kredytu wyniesie ".round(ratyRowne($kwota,$op,$liczba))*$liczba." zl.";
-if($sposob=='2') {
-    $kapital=$kwota/$liczba;
-   // echo $kapital;
-    $calykredyt=0;
-    for($i=0; $i<$liczba; $i++){
-        $wynik=($op/1200)*($liczba-$i);
-        $wynik+=1;
-        $wynik*=$kapital;
-        $wynik=round($wynik, 2);
-        $calykredyt+=$wynik;
-echo "rata kredytu nr ".($i+1)." będzie wynosiła $wynik zł.";
-
-?>
-        <html>
-        <br>
-        </html>
-<?php
-    }
-    echo "Łączny koszt kredytu będzie wynosił ".$calykredyt." zł.";
-}
+if($sposob=='2') ratyMalejace($kwota, $liczba, $op);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -110,6 +119,9 @@ echo "rata kredytu nr ".($i+1)." będzie wynosiła $wynik zł.";
     <select id="kapital" name="kapital" value="0">
         <option value="1">roczny</option>
         <option value="2">kwartalny</option>
+        <option value="3">miesięczny</option>
+        <option value="4">tygodniowy</option>
+        <option value="5">dzienny</option>
 
     </select>
     <br>
@@ -120,16 +132,27 @@ echo "rata kredytu nr ".($i+1)." będzie wynosiła $wynik zł.";
 <?php
 if($kapitalizacja==1){
     $liczbakap=$lata2+$miesiace2/12;
-    $lokata=$kwota2*potega((1+($oprocentowanie2/100)), $liczbakap);
-    $lokata=round($lokata, 2);
-    echo "Z lokaty wypłacone zostanie ".$lokata." zł";
+    lokata($kwota2, $oprocentowanie2, $liczbakap);
 }
 if($kapitalizacja==2){
     $liczbakap=($lata2*4+$miesiace2/3);
     $oprocentowanie2/=4;
-    $lokata=$kwota2*potega((1+($oprocentowanie2/100)), $liczbakap);
-    $lokata=round($lokata, 2);
-    echo "Z lokaty wypłacone zostanie ".$lokata." zł";
+    lokata($kwota2, $oprocentowanie2, $liczbakap);
+}
+if($kapitalizacja==3){
+    $liczbakap=$lata2*12+$miesiace2;
+    $oprocentowanie2/=12;
+    lokata($kwota2, $oprocentowanie2, $liczbakap);
+}
+if($kapitalizacja==4){
+    $liczbakap=$lata2*52+$miesiace2*4;
+    $oprocentowanie2/=52;
+    lokata($kwota2, $oprocentowanie2, $liczbakap);
+}
+if($kapitalizacja==5){
+    $liczbakap=$lata2*365+$miesiace2*30;
+    $oprocentowanie2/=365;
+    lokata($kwota2, $oprocentowanie2, $liczbakap);
 }
 ?>
 
