@@ -17,14 +17,6 @@ function ratyRowne($N,$r,$n){
     $wynik*=$N;
     return $wynik;
 }
-function ratyMalejace($kwota,$op,$i,$liczba){
-
-    $wynik=$kwota/($liczba-$i);
-    echo $wynik;
-    $kwota-=$wynik;
-    $wynik+=((1+($op/12))*$kwota);
-    return $wynik;
-}
 
 $op=$_GET['oprocentowanie'];
 $lata=$_GET['lata'];
